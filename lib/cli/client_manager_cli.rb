@@ -1,10 +1,8 @@
-require_relative 'json_loader'
-require_relative 'searcher'
-require_relative 'duplicate_checker'
+require_relative '../client_manager_app'
 
-class CLI
+class ClientManagerCLI
   def initialize
-    @clients = JSONLoader.load('clients.json')
+    @app = ClientManagerApp.new
   end
 
   def run
@@ -12,7 +10,7 @@ class CLI
     case command
     when 'search'
       search_term = ARGV[1]
-      results = Searcher.new(@clients).search_by_name(search_term)
+      results = @app.search(search_term)
       if results.any?
         puts "Clients found:"
         results.each { |client| puts "#{client['full_name']} (#{client['email']})" }
@@ -20,7 +18,7 @@ class CLI
         puts "No clients found."
       end
     when 'duplicates'
-      duplicates = DuplicateChecker.new(@clients).find_duplicates
+      duplicates = @app.find_duplicates
       if duplicates.any?
         puts "Duplicate Emails found:"
         duplicates.each do |email, clients|
