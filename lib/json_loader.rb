@@ -7,5 +7,8 @@ class JSONLoader
   rescue Errno::ENOENT
     puts "File not found: #{file_path}"
     []
+  rescue JSON::ParserError => e
+    puts "Error parsing JSON: #{e.message}"
+    []
   end
 end

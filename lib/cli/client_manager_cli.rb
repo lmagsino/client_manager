@@ -3,32 +3,59 @@ require_relative '../client_manager_app'
 class ClientManagerCLI
   def initialize
     @app = ClientManagerApp.new
+    @commands = {
+      'search' => method(:search),
+      'duplicates' => method(:find_duplicates),
+      # Add new commands here
+    }
   end
 
   def run
     command = ARGV[0]
-    case command
-    when 'search'
-      search_term = ARGV[1]
-      results = @app.search(search_term)
-      if results.any?
-        puts "Clients found:"
-        results.each { |client| puts "#{client['full_name']} (#{client['email']})" }
-      else
-        puts "No clients found."
-      end
-    when 'duplicates'
-      duplicates = @app.find_duplicates
-      if duplicates.any?
-        puts "Duplicate Emails found:"
-        duplicates.each do |email, clients|
-          clients.each { |client| puts "#{client['full_name']} (#{client['email']})" }
-        end
-      else
-        puts "No duplicate emails found."
+    if @commands.key?(command)
+      @commands[command].call(*ARGV[1..-1])
+    else
+      puts "Invalid command. Available commands: #{available_commands.join(', ')}."
+    end
+  end
+
+  private
+
+  def search(search_term)
+    if search_term.nil?
+      puts "Please provide a search term."
+      return
+    end
+    results = @app.search(search_term)
+    display_search_results(results)
+  end
+
+  def find_duplicates(*)
+    duplicates = @app.find_duplicates
+    display_duplicates(duplicates)
+  end
+
+  def display_search_results(results)
+    if results.any?
+      puts "Clients found:"
+      results.each { |client| puts "#{client['full_name']} (#{client['email']})" }
+    else
+      puts "No clients found."
+    end
+  end
+
+  def display_duplicates(duplicates)
+    if duplicates.any?
+      puts "Duplicate Emails found:"
+      duplicates.each do |email, clients|
+        clients.each { |client| puts "#{client['full_name']} (#{client['email']})" }
       end
     else
-      puts "Invalid command. Use 'search' or 'duplicates'."
+      puts "No duplicate emails found."
     end
+  end
+
+  def available_commands
+    @commands.keys
   end
 end
