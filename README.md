@@ -8,11 +8,13 @@ ClientManager is a minimalist command-line application built in Ruby to manage c
 
 This is a simple and extendable CLI application, with a design that follows best practices such as modularity, separation of concerns, and unit testing.
 
+
+## Project Structure
+```
 client_manager/
 ├── bin/
 │   └── client_manager.rb      # Entry point for CLI
 ├── lib/
-│   ├── client.rb              # Client model (if needed for future expansion)
 │   ├── json_loader.rb         # Handles loading the JSON data
 │   ├── searcher.rb            # Contains search logic
 │   ├── duplicate_checker.rb   # Checks for duplicates
@@ -27,6 +29,7 @@ client_manager/
 ├── clients.json               # The dataset
 ├── Gemfile                    # Dependencies like RSpec or others
 └── README.md                  # Instructions for setup and usage
+```
 
 ## Assumptions
 
