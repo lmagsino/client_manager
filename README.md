@@ -33,7 +33,7 @@ client_manager/
 
 ## Setup and Installation
 
-1. Clone the repository: `git clone <repository-url>`
+1. Clone the repository: `git clone https://github.com/lmagsino/client_manager.git`
 2. Navigate into the project directory: `cd client_manager`
 3. Install dependencies (if any): `bundle install`
 
