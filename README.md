@@ -35,7 +35,8 @@ client_manager/
 
 1. Clone the repository: `git clone https://github.com/lmagsino/client_manager.git`
 2. Navigate into the project directory: `cd client_manager`
-3. Install dependencies (if any): `bundle install`
+3. Make sure the Ruby version is `3.2.2`
+4. Install dependencies: `bundle install`
 
 ## Usage
 Run the application using the following commands:
