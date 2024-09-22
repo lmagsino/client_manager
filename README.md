@@ -31,8 +31,26 @@ client_manager/
 └── README.md                  # Instructions for setup and usage
 ```
 
-## Assumptions
+## Setup and Installation
 
+1. Clone the repository: `git clone <repository-url>`
+2. Navigate into the project directory: `cd client_manager`
+3. Install dependencies (if any): `bundle install`
+
+## Usage
+Run the application using the following commands:
+1. **Search clients by name**:
+      `ruby bin/client_manager.rb search "John"`
+2. **Find duplicate emails**:
+      `ruby bin/client_manager.rb duplicates`
+
+## Unit Test
+1. Install RSpec (if not installed):
+      `gem install rspec`
+2. Run tests:
+      `rspec`
+
+## Assumptions
 1. **Data Structure**: The dataset is provided as a JSON file, with each client having the attributes `id`, `full_name`, and `email`.
 2. **Command-line Arguments**: 
    - The `search` command searches clients by their `full_name`.
@@ -41,8 +59,4 @@ client_manager/
 4. **File Input**: The application expects the `clients.json` file to be present in the root directory. If the file is missing, it returns an empty array and handles the error gracefully.
 5. **Scalability**: For now, this app loads all client data into memory, which is manageable for small datasets but not scalable for large ones (future extensions could involve database integration).
 
-## Setup and Installation
 
-1. Clone the repository:
-2. Navigate into the project directory:
-3. Install dependencies (if any):
