@@ -1,5 +1,3 @@
-# spec/cli/client_manager_cli_spec.rb
-
 require 'rspec'
 require_relative '../../lib/cli/client_manager_cli'
 require_relative '../../lib/client_manager_app'

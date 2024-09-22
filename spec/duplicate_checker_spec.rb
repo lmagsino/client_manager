@@ -1,5 +1,3 @@
-# spec/duplicate_checker_spec.rb
-
 require 'rspec'
 require_relative '../lib/duplicate_checker'
 

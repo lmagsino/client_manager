@@ -1,5 +1,3 @@
-# spec/client_manager_app_spec.rb
-
 require 'rspec'
 require_relative '../lib/client_manager_app'
 require_relative '../lib/json_loader'

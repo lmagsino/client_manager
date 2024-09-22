@@ -1,5 +1,3 @@
-# spec/json_loader_spec.rb
-
 require 'rspec'
 require_relative '../lib/json_loader'
 
