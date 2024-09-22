@@ -15,20 +15,20 @@ RSpec.describe ClientManagerApp do
     ]
   end
 
+  let(:app) { ClientManagerApp.new }
+
   before do
     allow(JSONLoader).to receive(:load).and_return(valid_clients)
   end
 
   describe '#search' do
     it 'returns clients that match the search query' do
-      app = ClientManagerApp.new
       results = app.search('Jane')
       expect(results.size).to eq(2)
       expect(results.map { |client| client['full_name'] }).to include('Jane Smith', 'Another Jane Smith')
     end
 
     it 'returns no clients if no matches are found' do
-      app = ClientManagerApp.new
       results = app.search('Nonexistent Name')
       expect(results).to be_empty
     end
@@ -36,7 +36,6 @@ RSpec.describe ClientManagerApp do
 
   describe '#find_duplicates' do
     it 'finds clients with duplicate emails' do
-      app = ClientManagerApp.new
       duplicates = app.find_duplicates
       expect(duplicates.keys).to include('jane.smith@yahoo.com')
       expect(duplicates['jane.smith@yahoo.com'].size).to eq(2)
@@ -49,16 +48,16 @@ RSpec.describe ClientManagerApp do
       ]
       allow(JSONLoader).to receive(:load).and_return(unique_clients)
 
-      app = ClientManagerApp.new
-      duplicates = app.find_duplicates
+      new_app = ClientManagerApp.new
+      duplicates = new_app.find_duplicates
       expect(duplicates).to be_empty
     end
   end
 
   describe '#initialize' do
     it 'loads clients correctly' do
-      app = ClientManagerApp.new
-      expect(app.instance_variable_get(:@clients)).to eq(valid_clients)
+      instance = ClientManagerApp.new
+      expect(instance.instance_variable_get(:@clients)).to eq(valid_clients)
     end
   end
 end
