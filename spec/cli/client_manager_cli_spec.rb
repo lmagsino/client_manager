@@ -46,7 +46,7 @@ RSpec.describe ClientManagerCLI do
     context 'when command is invalid' do
       it 'outputs an error message' do
         ARGV.replace(['invalid_command'])
-        # expect { cli.run }.to output(/Invalid command. Use 'search' or 'duplicates'/).to_stdout
+        expect { cli.run }.to output(/Invalid command./).to_stdout
       end
     end
   end
