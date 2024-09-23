@@ -57,7 +57,7 @@ Run the application using the following commands:
    - The `search` command searches clients by their `full_name`.
    - The `duplicates` command checks for duplicate emails.
 3. **Case Sensitivity**: Searches for clients are **not** case-sensitive.
-4. **File Input**: The application expects the `clients.json` file to be present in the root directory. If the file is missing, it returns an empty array and handles the error gracefully.
+4. **File Input**: The application expects the `clients.json` file to be present in the root directory. If the file is missing, it handles the error gracefully.
 5. **Scalability**: For now, this app loads all client data into memory, which is manageable for small datasets but not scalable for large ones (future extensions could involve database integration).
 
 
