@@ -29,7 +29,7 @@ class ClientManagerCLI
     display_search_results(results)
   end
 
-  def find_duplicates(*)
+  def find_duplicates()
     duplicates = @app.find_duplicates
     display_duplicates(duplicates)
   end
@@ -53,9 +53,5 @@ class ClientManagerCLI
     else
       puts "No duplicate emails found."
     end
-  end
-
-  def available_commands
-    @commands.keys
   end
 end
