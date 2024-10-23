@@ -4,7 +4,7 @@ require_relative 'searcher'
 require_relative 'duplicate_checker'
 
 class ClientManagerApp
-  def initialize(file_path = 'clients.json')
+  def initialize(file_path)
     @clients = load_clients(file_path)
   end
 

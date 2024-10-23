@@ -1,8 +1,12 @@
 require_relative '../client_manager_app'
 
 class ClientManagerCLI
+  DEFAULT_JSON_PATH = 'clients.json'
+  SEARCH_FIELD = 'full_name'
+  DUPLICATE_FIELD = 'email'
+
   def initialize
-    @app = ClientManagerApp.new
+    @app = ClientManagerApp.new DEFAULT_JSON_PATH
     @commands = {
       'search' => method(:search),
       'duplicates' => method(:find_duplicates)
@@ -27,12 +31,12 @@ class ClientManagerCLI
       puts 'Usage: search <term>'
       return
     end
-    results = @app.search('full_name', search_term)
+    results = @app.search(SEARCH_FIELD, search_term)
     display_search_results(results)
   end
 
   def find_duplicates
-    duplicates = @app.find_duplicates('email')
+    duplicates = @app.find_duplicates(DUPLICATE_FIELD)
     display_duplicates(duplicates)
   end
 
