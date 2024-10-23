@@ -14,23 +14,25 @@ class ClientManagerCLI
     if @commands.key?(command)
       @commands[command].call(*ARGV[1..-1])
     else
-      puts "Invalid command."
+      puts "Invalid command. Available commands: #{@commands.keys.join(', ')}"
     end
   end
 
   private
 
-  def search(search_term)
+  def search(*args)
+    search_term = args.join(' ')
     if search_term.nil? || search_term.strip.empty?
       puts 'Please provide a valid search term.'
+      puts 'Usage: search <term>'
       return
     end
-    results = @app.search(search_term)
+    results = @app.search('full_name', search_term)
     display_search_results(results)
   end
 
-  def find_duplicates()
-    duplicates = @app.find_duplicates
+  def find_duplicates
+    duplicates = @app.find_duplicates('email')
     display_duplicates(duplicates)
   end
 
@@ -45,7 +47,7 @@ class ClientManagerCLI
 
   def display_duplicates(duplicates)
     if duplicates.any?
-      puts "Duplicate Emails found:"
+      puts "Duplicate emails found:"
       duplicates.each do |email, clients|
         puts "#{email}:"
         clients.each { |client| puts "  - #{client['full_name']} (#{client['email']})" }

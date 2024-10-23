@@ -1,23 +1,12 @@
+require_relative 'indexer'
+
 class DuplicateChecker
-  def initialize(clients)
-    @clients = clients
-    build_email_index
+  def initialize(indexer)
+    @indexer = indexer
   end
 
-  # Build an index for quick lookups by email
-  def build_email_index
-    @email_index = Hash.new { |hash, key| hash[key] = [] }
-
-    @clients.each do |client|
-      email = client['email']
-      # Index clients by email
-      @email_index[email] << client if email
-    end
-  end
-
-  # Find duplicates based on indexed emails
-  def find_duplicates
-    # Select emails with more than one associated client
-    @email_index.select { |_, clients| clients.size > 1 }
+  def find_duplicates(field)
+    index = @indexer.build_index(field, prefix_index: false)
+    index.select { |_, clients| clients.size > 1 }
   end
 end

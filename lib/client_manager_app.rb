@@ -1,4 +1,5 @@
 require_relative 'json_loader'
+require_relative 'indexer'
 require_relative 'searcher'
 require_relative 'duplicate_checker'
 
@@ -7,12 +8,12 @@ class ClientManagerApp
     @clients = load_clients(file_path)
   end
 
-  def search(term)
-    Searcher.new(@clients).search_by_name(term)
+  def search(field, term, case_sensitive: false)
+    searcher.search_by_field(field, term, case_sensitive: case_sensitive)
   end
 
-  def find_duplicates
-    DuplicateChecker.new(@clients).find_duplicates
+  def find_duplicates(field)
+    duplicate_checker.find_duplicates(field)
   end
 
   private
@@ -23,5 +24,17 @@ class ClientManagerApp
       puts "Warning: No clients loaded from #{file_path}."
     end
     clients
+  end
+
+  def indexer
+    @indexer ||= Indexer.new(@clients)
+  end
+
+  def searcher
+    @searcher ||= Searcher.new(indexer)
+  end
+
+  def duplicate_checker
+    @duplicate_checker ||= DuplicateChecker.new(indexer)
   end
 end

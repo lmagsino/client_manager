@@ -1,5 +1,6 @@
 require 'rspec'
 require_relative '../lib/searcher'
+require_relative '../lib/indexer'
 
 RSpec.describe Searcher do
   let(:clients) do
@@ -10,18 +11,26 @@ RSpec.describe Searcher do
     ]
   end
 
-  let(:searcher) { instance_double(Searcher) }
+  let(:indexer) { instance_double(Indexer) }
+  let(:searcher) { Searcher.new(indexer) }
 
   before do
-    allow(Searcher).to receive(:new).with(clients).and_return(searcher)
+    allow(Indexer).to receive(:new).with(clients).and_return(indexer)
   end
 
-  describe '#search_by_name' do
+  describe '#search_by_field' do
     context 'when matching clients are found' do
       it 'returns clients that match the query' do
-        allow(searcher).to receive(:search_by_name).with('Jane', case_sensitive: false).and_return(clients[1..2])
+        allow(indexer).to receive(:build_index).with('full_name', prefix_index: true).and_return({
+          'jane' => clients[1..2],
+          'jane s' => clients[1..2],
+          'jane sm' => clients[1..2],
+          'jane smi' => clients[1..2],
+          'jane smit' => clients[1..2],
+          'jane smith' => clients[1..2]
+        })
 
-        results = searcher.search_by_name('Jane', case_sensitive: false)
+        results = searcher.search_by_field('full_name', 'Jane', case_sensitive: false)
 
         expect(results.size).to eq(2)
         expect(results.map { |client| client['full_name'] }).to include('Jane Smith', 'Another Jane Smith')
@@ -30,9 +39,9 @@ RSpec.describe Searcher do
 
     context 'when no matching clients are found' do
       it 'returns an empty array' do
-        allow(searcher).to receive(:search_by_name).with('Nonexistent', case_sensitive: false).and_return([])
+        allow(indexer).to receive(:build_index).with('full_name', prefix_index: true).and_return({})
 
-        results = searcher.search_by_name('Nonexistent', case_sensitive: false)
+        results = searcher.search_by_field('full_name', 'Nonexistent', case_sensitive: false)
 
         expect(results).to be_empty
       end
@@ -41,9 +50,16 @@ RSpec.describe Searcher do
 
   describe '#search with case sensitivity' do
     it 'returns clients matching the case-sensitive query' do
-      allow(searcher).to receive(:search_by_name).with('jane', case_sensitive: true).and_return([clients[1]])
+      allow(indexer).to receive(:build_index).with('full_name', prefix_index: true).and_return({
+        'Jane' => [clients[1]],
+        'Jane S' => [clients[1]],
+        'Jane Sm' => [clients[1]],
+        'Jane Smi' => [clients[1]],
+        'Jane Smit' => [clients[1]],
+        'Jane Smith' => [clients[1]]
+      })
 
-      results = searcher.search_by_name('jane', case_sensitive: true)
+      results = searcher.search_by_field('full_name', 'Jane', case_sensitive: true)
 
       expect(results.size).to eq(1)
       expect(results.first['full_name']).to eq('Jane Smith')
