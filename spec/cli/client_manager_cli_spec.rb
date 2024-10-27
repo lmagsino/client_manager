@@ -33,14 +33,14 @@ RSpec.describe ClientManagerCLI do
 
     context 'when command is duplicates' do
       it 'calls find_duplicates with the email field' do
-        allow(app).to receive(:find_duplicates).with('email').and_return({})
+        allow(app).to receive(:find_duplicates).with('email').and_return([])
         ARGV.replace(['duplicates'])
         cli.run
         expect(app).to have_received(:find_duplicates).with('email')
       end
 
       it 'handles no duplicates found' do
-        allow(app).to receive(:find_duplicates).with('email').and_return({})
+        allow(app).to receive(:find_duplicates).with('email').and_return([])
         ARGV.replace(['duplicates'])
         expect { cli.run }.to output(/No duplicate emails found./).to_stdout
       end
@@ -75,6 +75,14 @@ RSpec.describe ClientManagerCLI do
       }
       expected_output = "Duplicate emails found:\njohn@example.com:\n  - John Doe (john@example.com)\n  - Johnny Doe (john@example.com)\n"
       expect { cli.send(:display_duplicates, duplicates) }.to output(expected_output).to_stdout
+    end
+
+    it 'handles nil duplicates' do
+      expect { cli.send(:display_duplicates, nil) }.not_to output.to_stdout
+    end
+
+    it 'handles empty duplicates' do
+      expect { cli.send(:display_duplicates, {}) }.to output("No duplicate emails found.\n").to_stdout
     end
   end
 end

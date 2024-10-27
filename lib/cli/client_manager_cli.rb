@@ -52,7 +52,7 @@ class ClientManagerCLI
   end
 
   def display_duplicates(duplicates)
-    return if results.nil?
+    return if duplicates.nil?
 
     if duplicates.any?
       puts "Duplicate emails found:"
