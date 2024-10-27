@@ -9,10 +9,14 @@ class ClientManagerApp
   end
 
   def search(field, term, case_sensitive: false)
+    return if @clients.empty?
+
     searcher.search_by_field(field, term, case_sensitive: case_sensitive)
   end
 
   def find_duplicates(field)
+    return if @clients.empty?
+
     duplicate_checker.find_duplicates(field)
   end
 

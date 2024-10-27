@@ -41,6 +41,8 @@ class ClientManagerCLI
   end
 
   def display_search_results(results)
+    return if results.nil?
+
     if results.any?
       puts 'Clients found:'
       results.each { |client| puts "#{client['full_name']} (#{client['email']})" }
@@ -50,6 +52,8 @@ class ClientManagerCLI
   end
 
   def display_duplicates(duplicates)
+    return if results.nil?
+
     if duplicates.any?
       puts "Duplicate emails found:"
       duplicates.each do |email, clients|
